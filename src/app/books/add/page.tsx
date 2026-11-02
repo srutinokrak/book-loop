@@ -54,6 +54,18 @@ export default function AddBookPage() {
     const formData = new FormData(form);
     setIsSaving(true);
 
+   const res = await fetch("http://localhost:8000/books/add",{
+    method: 'POST',
+    headers: {
+      'Content-type': "application/json"
+    },
+    body: JSON.stringify(form)
+   })
+
+   const data = await res.json()
+   console.log(data);
+
+
     try {
       const response = await fetch("/api/books", {
         method: "POST",
@@ -83,6 +95,9 @@ export default function AddBookPage() {
   if (isPending || !session) {
     return <div className="mx-auto my-16 max-w-xl px-4 text-center text-slate-600">Loading your account…</div>;
   }
+
+
+
 
   return (
     <div className="mx-auto my-10 w-full max-w-2xl px-4">
@@ -114,10 +129,10 @@ export default function AddBookPage() {
 
               <Field>
                 <FieldLabel htmlFor="book-image">Book Image</FieldLabel>
-                <Input id="book-image" type="file" accept="image/*" onChange={handleImageChange} disabled={isUploading || isSaving} required={!imageUrl} />
+                {/* <Input id="book-image" type="file" accept="image/*" onChange={handleImageChange} disabled={isUploading || isSaving} required={!imageUrl} />
                 <FieldDescription>
                   {isUploading ? "Uploading image…" : imageUrl ? "Image uploaded successfully." : "Choose an image (up to 10 MB); it will be uploaded to ImgBB."}
-                </FieldDescription>
+                </FieldDescription> */}
               </Field>
 
               <Field>
@@ -135,11 +150,11 @@ export default function AddBookPage() {
                 <Input id="user-email" type="email" value={session.user.email} readOnly />
               </Field>
 
-              {message && (
+              {/* {message && (
                 <p role={messageType === "error" ? "alert" : "status"} className={`rounded-md p-3 text-sm ${messageType === "success" ? "bg-green-50 text-green-800" : "bg-red-50 text-red-700"}`}>
                   {message}
                 </p>
-              )}
+              )} */}
 
               <Button type="submit" disabled={isSaving || isUploading || !imageUrl} className="bg-[#2878a5]">
                 {isSaving ? "Adding book…" : "Add Book"}
