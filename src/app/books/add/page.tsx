@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { BookPlus, Undo2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -91,6 +91,8 @@ export default function AddBookPage() {
     } finally {
       setIsSaving(false);
     }
+
+   
   };
 
   if (isPending || !session) {
@@ -99,6 +101,7 @@ export default function AddBookPage() {
         Loading your account…
       </div>
     );
+     
   }
 
   return (

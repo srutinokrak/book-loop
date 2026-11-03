@@ -89,9 +89,9 @@ const AllBooks = async () => {
               Something went wrong while reaching the books service. Please
               refresh the page and try again.
             </p>
-            <a href="/books" className={`${primaryButton} mt-6`}>
+            <Link href="/books" className={`${primaryButton} mt-6`}>
               Try again
-            </a>
+            </Link>
           </div>
         ) : books.length === 0 ? (
           <div className="mt-8 flex flex-col items-center rounded-3xl border border-dashed border-slate-300 bg-white/70 px-6 py-16 text-center">

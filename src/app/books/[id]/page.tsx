@@ -16,6 +16,9 @@ import { format } from "date-fns";
 import { buttonVariants } from "@/components/ui/button";
 import { getCategoryStyle } from "@/lib/category-styles";
 
+import EditBooksdialog from "@/components/EditBooksdialog";
+import DeleteBooks from "@/components/DeleteBooks";
+
 type Book = {
   _id: string;
   title: string;
@@ -256,27 +259,10 @@ const BooksDetailsPage = async ({
                   Borrow This Book
                 </button>
 
-                <button
-                  type="button"
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "lg" }),
-                    "h-12 w-full rounded-full border-slate-300 bg-white px-6 text-base text-slate-700 hover:bg-slate-100 sm:w-auto",
-                  )}
-                >
-                  <Pencil data-icon="inline-start" />
-                  Edit
-                </button>
-
-                <button
-                  type="button"
-                  className={cn(
-                    buttonVariants({ variant: "destructive", size: "lg" }),
-                    "h-12 w-full rounded-full px-6 text-base sm:w-auto",
-                  )}
-                >
-                  <Trash2 data-icon="inline-start" />
-                  Delete
-                </button>
+               
+                  <EditBooksdialog book= {book}/>
+                   <DeleteBooks id={id}/>
+           
                 </div>
                 
               </div>
