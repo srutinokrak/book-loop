@@ -83,7 +83,7 @@ function BookMessage({
   description: string;
 }) {
   return (
-    <section className="flex min-h-[calc(100vh-76px)]  border border-sky-300 items-center bg-[#f8fafc] px-5 py-16 sm:px-8">
+    <section className="flex min-h-[calc(100vh-76px)] items-center bg-[#f8fafc] px-5 py-16 sm:px-8">
       <div className="mx-auto flex w-full max-w-xl flex-col items-center rounded-3xl border border-dashed border-slate-300 bg-white/70 px-6 py-16 text-center">
         <span className="flex size-14 items-center justify-center rounded-2xl bg-sky-100 text-sky-700">
           <BookOpen size={26} strokeWidth={1.8} />
@@ -183,7 +183,7 @@ const BooksDetailsPage = async ({
               </div>
             </div>
 
-            <div className="flex flex-col border-t-4 border-sky-300 p-6 sm:p-8 lg:border-l-4 lg:border-t-0 lg:p-10">
+            <div className="flex flex-col p-6 sm:p-8 lg:p-10">
               <span
                 className={cn(
                   "w-fit rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em]",
@@ -243,8 +243,9 @@ const BooksDetailsPage = async ({
                 </div>
               </div>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                <button
+              <div className="mt-8">
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                     <button
                   type="button"
                   className={cn(
                     buttonVariants({ size: "lg" }),
@@ -276,6 +277,8 @@ const BooksDetailsPage = async ({
                   <Trash2 data-icon="inline-start" />
                   Delete
                 </button>
+                </div>
+                
               </div>
             </div>
           </div>
