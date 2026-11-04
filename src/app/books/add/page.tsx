@@ -26,6 +26,7 @@ const initialForm = {
   category: "",
   imageUrl: "",
   description: "",
+  totalCopies: "1",
 };
 
 export default function AddBookPage() {
@@ -55,6 +56,11 @@ export default function AddBookPage() {
     setIsSaving(true);
 
     try {
+      const totalCopies = Number(form.totalCopies);
+      if (!Number.isInteger(totalCopies) || totalCopies < 1) {
+        throw new Error("Total copies must be a whole number of at least 1.");
+      }
+
       const response = await fetch("/api/books", {
         method: "POST",
         headers: {
@@ -66,6 +72,7 @@ export default function AddBookPage() {
           category: form.category,
           image: form.imageUrl,
           description: form.description,
+          totalCopies,
         }),
       });
 
@@ -183,6 +190,22 @@ export default function AddBookPage() {
               required
             />
           </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="totalCopies">Total Copies</Label>
+            <Input
+              id="totalCopies"
+              name="totalCopies"
+              type="number"
+              min={1}
+              step={1}
+              placeholder="1"
+              value={form.totalCopies}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
           <div className="space-y-1.5">
             <Label htmlFor="user-name">Your Name</Label>
             <Input id="user-name" value={session.user.name} readOnly />

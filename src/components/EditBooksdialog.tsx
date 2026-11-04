@@ -133,7 +133,10 @@ const EditBooksdialog = ({book}:Props) => {
         <DialogHeader>
           <DialogTitle>Edit books</DialogTitle>
           <DialogDescription>
-            <form onSubmit={handleSubmit} className="mt-2 space-y-5">
+             Update the book details below.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="mt-2 space-y-5">
               <h1 className="text-center text-2xl font-semibold text-[#2878a5]">
                 Add a New Book
               </h1>
@@ -253,8 +256,6 @@ const EditBooksdialog = ({book}:Props) => {
                 </Button>
               </div>
             </form>
-          </DialogDescription>
-        </DialogHeader>
       </DialogContent>
     </Dialog>
   );

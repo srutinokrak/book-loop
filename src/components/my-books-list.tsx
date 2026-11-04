@@ -5,6 +5,8 @@ import { cn } from "cn";
 import type { Book } from "@/components/book-card";
 import { buttonVariants } from "@/components/ui/button";
 import { getCategoryStyle } from "@/lib/category-styles";
+import EditBooksdialog from "./EditBooksdialog";
+import DeleteBooks from "./DeleteBooks";
 
 export function MyBooksList({ initialBooks }: { initialBooks: Book[] }) {
   if (initialBooks.length === 0) {
@@ -95,27 +97,13 @@ export function MyBooksList({ initialBooks }: { initialBooks: Book[] }) {
                   View
                 </Link>
 
-                <button
-                  type="button"
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "sm" }),
-                    "rounded-full",
-                  )}
-                >
-                  <Pencil data-icon="inline-start" />
-                  Edit
-                </button>
+            
+                <EditBooksdialog book={{ ...book, description: book.description ?? "" }} />
+                
 
-                <button
-                  type="button"
-                  className={cn(
-                    buttonVariants({ variant: "destructive", size: "sm" }),
-                    "rounded-full",
-                  )}
-                >
-                  <Trash2 data-icon="inline-start" />
-                  Delete
-                </button>
+               
+               <DeleteBooks id={book._id} />
+           
               </div>
             </div>
           </article>

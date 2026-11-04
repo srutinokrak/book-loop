@@ -6,8 +6,7 @@ import {
   BookOpen,
   BookOpenCheck,
   CalendarDays,
-  Pencil,
-  Trash2,
+
   UserRound,
 } from "lucide-react";
 import { cn } from "cn";
@@ -18,6 +17,7 @@ import { getCategoryStyle } from "@/lib/category-styles";
 
 import EditBooksdialog from "@/components/EditBooksdialog";
 import DeleteBooks from "@/components/DeleteBooks";
+import BorrowBookDialog from "@/components/borrows/BorrowBookDialog";
 
 type Book = {
   _id: string;
@@ -29,6 +29,8 @@ type Book = {
   userName?: string;
   userEmail?: string;
   addedAt?: string;
+  totalCopies?: number;
+  availableCopies?: number;
 };
 
 const BOOKS_API_BASE = process.env.BOOKS_API_URL ?? "http://localhost:8000";
@@ -150,6 +152,8 @@ const BooksDetailsPage = async ({
       ? format(addedOn, "MMM d, yyyy")
       : null;
   const categoryStyle = getCategoryStyle(book.category);
+  const isAvailable =
+    typeof book.availableCopies !== "number" || book.availableCopies > 0;
 
   return (
     <section className="min-h-[calc(100vh-76px)]  bg-[#f8fafc] px-5 py-10 sm:px-8 sm:py-14">
@@ -170,7 +174,7 @@ const BooksDetailsPage = async ({
                 categoryStyle.soft,
               )}
             >
-              <div className="aspect-[2/3] w-full max-w-sm overflow-hidden rounded-2xl bg-slate-200 shadow-lg ring-1 ring-black/5">
+              <div className="aspect-2/3 w-full max-w-sm overflow-hidden rounded-2xl bg-slate-200 shadow-lg ring-1 ring-black/5">
                 {book.image ? (
                   // eslint-disable-next-line @next/next/no-img-element -- covers are user-supplied URLs from any host
                   <img
@@ -248,23 +252,31 @@ const BooksDetailsPage = async ({
 
               <div className="mt-8">
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                     <button
-                  type="button"
-                  className={cn(
-                    buttonVariants({ size: "lg" }),
-                    "h-12 w-full rounded-full bg-[#334e68] px-8 text-base text-white hover:bg-[#243b53] sm:w-auto",
+                  {isAvailable ? (
+                    <BorrowBookDialog
+                      book={{
+                        _id: book._id,
+                        title: book.title,
+                        image: book.image,
+                      }}
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      className={cn(
+                        buttonVariants({ size: "lg" }),
+                        "h-12 w-full cursor-not-allowed rounded-full bg-slate-300 px-8 text-base text-slate-600 sm:w-auto",
+                      )}
+                    >
+                      <BookOpenCheck data-icon="inline-start" />
+                      Not Available
+                    </button>
                   )}
-                >
-                  <BookOpenCheck data-icon="inline-start" />
-                  Borrow This Book
-                </button>
 
-               
-                  <EditBooksdialog book= {book}/>
-                   <DeleteBooks id={id}/>
-           
+                  <EditBooksdialog book={book} />
+                  <DeleteBooks id={id} />
                 </div>
-                
               </div>
             </div>
           </div>
