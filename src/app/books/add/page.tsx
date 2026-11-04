@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Select,
   SelectContent,
@@ -245,7 +246,11 @@ export default function AddBookPage() {
             </Button>
 
             <Button type="submit" disabled={isSaving}>
-              <BookPlus data-icon="inline-start" />
+              {isSaving ? (
+                <Spinner data-icon="inline-start" />
+              ) : (
+                <BookPlus data-icon="inline-start" />
+              )}
               {isSaving ? "Adding book…" : "Add Book"}
             </Button>
           </div>

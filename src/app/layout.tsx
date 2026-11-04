@@ -16,7 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BookNook | Your neighborhood bookshelf",
+  title: {
+    default: "BookNook",
+    template: "BookNook | %s",
+  },
   description: "Discover, share, and borrow books with BookNook.",
 };
 

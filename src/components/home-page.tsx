@@ -1,6 +1,7 @@
 import { Banner } from "@/components/banner";
 import Link from "next/link";
 import { ArrowRight, BookMarked, BookOpen, FlaskConical, Heart, Search, Star } from "lucide-react";
+import Newarraivals from "./newarraivals";
 
 const categories = [
   { name: "Fiction", detail: "Novels, fantasy & more", href: "/books?category=fiction", icon: BookOpen, color: "bg-[#e9e3f5] text-[#68558b]", count: "Stories to get lost in" },
@@ -18,6 +19,7 @@ export function HomePage() {
   return (
     <>
       <Banner />
+      <Newarraivals/>
 
       <section className="bg-[#f8fafc] px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl">
@@ -85,6 +87,8 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      
     </>
   );
 }

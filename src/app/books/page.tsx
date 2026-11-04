@@ -7,7 +7,7 @@ import { BookCard, type Book } from "@/components/book-card";
 import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "All Books | BookNook",
+  title: "All Books",
   description: "Browse every book shared on the BookNook shelves.",
 };
 

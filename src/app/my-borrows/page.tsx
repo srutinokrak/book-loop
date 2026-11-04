@@ -10,7 +10,7 @@ import { BorrowsTable, type Borrow } from "@/components/borrows/BorrowsTable";
 import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "My Borrows | BookNook",
+  title: "My Borrows",
   description: "Track the books you have borrowed from BookNook.",
 };
 

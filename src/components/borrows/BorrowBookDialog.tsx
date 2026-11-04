@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/components/ui/toast";
 
 type Props = {
@@ -168,7 +169,11 @@ const BorrowBookDialog = ({ book }: Props) => {
                 className="rounded-full"
                 disabled={isBorrowing}
               >
-                <BookOpenCheck data-icon="inline-start" />
+                {isBorrowing ? (
+                  <Spinner data-icon="inline-start" />
+                ) : (
+                  <BookOpenCheck data-icon="inline-start" />
+                )}
                 {isBorrowing ? "Borrowing…" : "Confirm Borrow"}
               </Button>
             </div>

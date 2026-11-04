@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Select,
   SelectContent,
@@ -251,7 +252,11 @@ const EditBooksdialog = ({book}:Props) => {
                 </Button>
 
                 <Button type="submit" disabled={isSaving}>
-                  <BookPlus data-icon="inline-start" />
+                  {isSaving ? (
+                    <Spinner data-icon="inline-start" />
+                  ) : (
+                    <BookPlus data-icon="inline-start" />
+                  )}
                   {isSaving ? "Editing book…" : "Edit Book"}
                 </Button>
               </div>

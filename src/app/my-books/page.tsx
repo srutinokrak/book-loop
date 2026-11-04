@@ -11,7 +11,7 @@ import type { Book } from "@/components/book-card";
 import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "My Books | BookNook",
+  title: "My Books",
   description: "Manage the books you have added to BookNook.",
 };
 

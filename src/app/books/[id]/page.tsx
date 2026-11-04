@@ -6,7 +6,6 @@ import {
   BookOpen,
   BookOpenCheck,
   CalendarDays,
-
   UserRound,
 } from "lucide-react";
 import { cn } from "cn";
@@ -68,15 +67,15 @@ export async function generateMetadata({
   try {
     const book = await getBook(id);
     if (!book) {
-      return { title: "Book not found | BookNook" };
+      return { title: "Book not found" };
     }
 
     return {
-      title: `${book.title} by ${book.author} | BookNook`,
+      title: `${book.title} by ${book.author}`,
       description: book.description,
     };
   } catch {
-    return { title: "Book Details | BookNook" };
+    return { title: "Book Details" };
   }
 }
 
@@ -152,8 +151,8 @@ const BooksDetailsPage = async ({
       ? format(addedOn, "MMM d, yyyy")
       : null;
   const categoryStyle = getCategoryStyle(book.category);
-  const isAvailable =
-    typeof book.availableCopies !== "number" || book.availableCopies > 0;
+  const availableCopies = book.availableCopies ?? 0;
+  const isAvailable = availableCopies > 0;
 
   return (
     <section className="min-h-[calc(100vh-76px)]  bg-[#f8fafc] px-5 py-10 sm:px-8 sm:py-14">
@@ -248,6 +247,7 @@ const BooksDetailsPage = async ({
                     </p>
                   )}
                 </div>
+                <p>{book.availableCopies ?? 0} copies left</p>
               </div>
 
               <div className="mt-8">

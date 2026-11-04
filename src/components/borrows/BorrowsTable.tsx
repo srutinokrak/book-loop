@@ -8,6 +8,7 @@ import { BookOpen, Undo2 } from "lucide-react";
 import { cn } from "cn";
 
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -163,10 +164,11 @@ export function BorrowsTable({ borrows }: { borrows: Borrow[] }) {
                   disabled={returningId === borrow._id}
                   onClick={() => handleReturn(borrow._id)}
                 >
-                  <Undo2
-                    data-icon="inline-start"
-                    className={returningId === borrow._id ? "animate-spin" : ""}
-                  />
+                  {returningId === borrow._id ? (
+                    <Spinner data-icon="inline-start" />
+                  ) : (
+                    <Undo2 data-icon="inline-start" />
+                  )}
                   {returningId === borrow._id ? "Returning…" : "Return Book"}
                 </Button>
               </TableCell>
