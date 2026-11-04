@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: "Track the books you have borrowed from BookNook.",
 };
 
-const BORROWS_API = process.env.BORROWS_API_URL ?? "http://localhost:8000";
+const BORROWS_API = process.env.BORROWS_API_URL ?? "https://book-loop-backend.vercel.app";
 
 export default async function MyBorrowsPage() {
   const session = await auth.api.getSession({

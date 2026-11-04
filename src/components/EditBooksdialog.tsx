@@ -74,7 +74,7 @@ const EditBooksdialog = ({ book }: Props) => {
     const updatedData = { title, author, category, description, image };
 
     try {
-      const response = await fetch(`http://localhost:8000/book/${book._id}`, {
+      const response = await fetch(`https://book-loop-backend.vercel.app/book/${book._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

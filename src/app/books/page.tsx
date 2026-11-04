@@ -11,8 +11,10 @@ export const metadata: Metadata = {
   description: "Browse every book shared on the BookNook shelves.",
 };
 
+export const dynamic = "force-dynamic";
+
 const BOOKS_API_URL =
-  process.env.BOOKS_API_URL ?? "http://localhost:8000/books";
+  process.env.BOOKS_API_URL ?? "https://book-loop-backend.vercel.app/books";
 
 const primaryButton = cn(
   buttonVariants({ size: "lg" }),

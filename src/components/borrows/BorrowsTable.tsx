@@ -29,7 +29,7 @@ export type Borrow = {
   returnDate: string;
 };
 
-const BORROWS_API = "http://localhost:8000";
+const BORROWS_API = "https://book-loop-backend.vercel.app";
 
 function formatDate(value: string) {
   const date = new Date(value);

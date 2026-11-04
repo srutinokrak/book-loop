@@ -29,7 +29,7 @@ export function Navbar() {
 
   const user = session?.user;
 
-  console.log(user);
+
   // const [user, setUser] = useState<{ name: string; photo: string } | null>(null);
 
   const handleLogout = () =>{

@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { BookCard, type Book } from "@/components/book-card";
 
-const NEW_ARRIVALS_API_URL =
-  process.env.NEW_ARRIVALS_API_URL ?? "http://localhost:8000/new-arrivals";
+const BOOKS_API_BASE = "https://book-loop-backend.vercel.app/new-arrivals";
 
 async function getLatestBooks(): Promise<Book[]> {
-  const response = await fetch(`${NEW_ARRIVALS_API_URL}?limit=6`, {
+  const response = await fetch(`${BOOKS_API_BASE}?limit=6`, {
     cache: "no-store",
   });
 

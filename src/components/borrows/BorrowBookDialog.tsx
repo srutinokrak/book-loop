@@ -29,7 +29,7 @@ type Props = {
   };
 };
 
-const BORROWS_API = "http://localhost:8000";
+const BORROWS_API = "https://book-loop-backend.vercel.app";
 
 const BorrowBookDialog = ({ book }: Props) => {
   const router = useRouter();

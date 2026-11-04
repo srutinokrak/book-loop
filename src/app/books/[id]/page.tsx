@@ -32,7 +32,7 @@ type Book = {
   availableCopies?: number;
 };
 
-const BOOKS_API_BASE = process.env.BOOKS_API_URL ?? "http://localhost:8000";
+const BOOKS_API_BASE = process.env.BOOKS_API_URL ?? "https://book-loop-backend.vercel.app";
 
 const getBook = cache(async (id: string): Promise<Book | null> => {
   const response = await fetch(`${BOOKS_API_BASE}/book/${id}`, {
@@ -121,6 +121,7 @@ const BooksDetailsPage = async ({
 
   try {
     book = await getBook(id);
+    console.log(book);
   } catch (error) {
     console.error("Could not load book:", error);
     loadFailed = true;

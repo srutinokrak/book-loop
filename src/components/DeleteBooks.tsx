@@ -27,7 +27,7 @@ const DeleteBooks = ({ id }: { id: string }) => {
     setOpen(false);
 
     try {
-      const res = await fetch(`http://localhost:8000/book/${id}`, {
+      const res = await fetch(`https://book-loop-backend.vercel.app/book/${id}`, {
         method: "DELETE",
       });
 
