@@ -12,11 +12,11 @@ import {
 } from "@/components/ui/alert-dialog";
 
 
-import {  buttonVariants } from "./ui/button";
+import {  buttonVariants } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { cn } from "cn";
 import { redirect } from "next/navigation";
-import { toast } from "./ui/toast";
+import { toast } from "@/components/ui/toast";
 
 const DeleteBooks = ({id}:{id: string}) => {
 

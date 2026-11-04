@@ -16,7 +16,11 @@ export const metadata: Metadata = {
 };
 
 export default async function MyBooksPage() {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await auth.api.getSession(
+    { 
+      headers: await headers() 
+
+    });
 
   if (!session) {
     redirect("/login");

@@ -5,7 +5,6 @@ import { cn } from "cn";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { getCategoryStyle } from "@/lib/category-styles";
-
 export type Book = {
   _id: string;
   title: string;
@@ -20,7 +19,7 @@ export function BookCard({ book }: { book: Book }) {
 
   return (
     <Card className="group h-full gap-0 overflow-hidden rounded-2xl bg-white   py-0 shadow-sm ring-slate-200 transition duration-300 hover:-translate-y-1.5 hover:shadow-xl">
-      <div className="relative aspect-[2/3] w-full overflow-hidden bg-slate-100">
+      <div className="relative aspect-2/3w-full overflow-hidden bg-slate-100">
         {book.image ? (
           // eslint-disable-next-line @next/next/no-img-element -- covers are user-supplied URLs from any host
           <img

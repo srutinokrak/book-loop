@@ -31,8 +31,6 @@ import { toast } from "@/components/ui/toast";
 
 const CATEGORIES = ["Fiction", "Science", "History", "Kids", "Others"];
 
-
-
 type Book = {
   _id: string;
   title: string;
@@ -42,9 +40,9 @@ type Book = {
   description: string;
 };
 
-type Props = {
-  book: Book;
-};
+type Props = { book: Book };
+
+
 
 const EditBooksdialog = ({book}:Props) => {
 
