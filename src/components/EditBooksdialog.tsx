@@ -43,14 +43,11 @@ type Book = {
 
 type Props = { book: Book };
 
-
-
-const EditBooksdialog = ({book}:Props) => {
-
-    console.log(book);
+const EditBooksdialog = ({ book }: Props) => {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
 
+  const [open, setOpen] = useState(false);
   const [form, setForm] = useState(book);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -73,7 +70,8 @@ const EditBooksdialog = ({book}:Props) => {
     setMessage("");
     setIsSaving(true);
 
-    const {_id, ...updatedData} = form
+    const { title, author, category, description, image } = form;
+    const updatedData = { title, author, category, description, image };
 
     try {
       const response = await fetch(`http://localhost:8000/book/${book._id}`, {
@@ -87,19 +85,19 @@ const EditBooksdialog = ({book}:Props) => {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Could not add the book.");
+        throw new Error(result.message || "Could not update the book.");
       }
 
       toast.add({
         type: "success",
-        title: "Book added successfully!",
-        description: "Your book has been added to the library.",
+        title: "Book updated successfully!",
+        description: "Your changes have been saved.",
       });
-      setMessageType("success");
-      setForm(book);
+      setOpen(false);
+      router.refresh();
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Could not add the book.",
+        error instanceof Error ? error.message : "Could not update the book.",
       );
       setMessageType("error");
     } finally {
@@ -116,11 +114,17 @@ const EditBooksdialog = ({book}:Props) => {
   }
 
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (isOpen) {
+          setForm(book);
+        }
+      }}
+    >
       <DialogTrigger>
-        {" "}
         <div
-          
           className={cn(
             buttonVariants({ variant: "outline", size: "lg" }),
             "h-12 w-full rounded-full border-slate-300 bg-white px-6 text-base text-slate-700 hover:bg-slate-100 sm:w-auto",
@@ -130,137 +134,134 @@ const EditBooksdialog = ({book}:Props) => {
           Edit
         </div>
       </DialogTrigger>
-      <DialogContent className={'min-w-xl'}>
+      <DialogContent className={"min-w-xl"}>
         <DialogHeader>
-          <DialogTitle>Edit books</DialogTitle>
+          <DialogTitle>Edit Book</DialogTitle>
           <DialogDescription>
-             Update the book details below.
+            Update the book details below.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="mt-2 space-y-5">
-              <h1 className="text-center text-2xl font-semibold text-[#2878a5]">
-                Add a New Book
-              </h1>
+          <h1 className="text-center text-2xl font-semibold text-[#2878a5]">
+            Edit Book Details
+          </h1>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="title">Book Title</Label>
-                <Input
-                  id="title"
-                  name="title"
-                  placeholder="Book title"
-                  value={form.title}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="title">Book Title</Label>
+            <Input
+              id="title"
+              name="title"
+              placeholder="Book title"
+              value={form.title}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="author">Author Name</Label>
-                <Input
-                  id="author"
-                  name="author"
-                  placeholder="Author name"
-                  value={form.author}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="author">Author Name</Label>
+            <Input
+              id="author"
+              name="author"
+              placeholder="Author name"
+              value={form.author}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="category">Category</Label>
-                <Select
-                  value={form.category || null}
-                  onValueChange={(value) =>
-                    setForm({ ...form, category: value ?? "" })
-                  }
-                >
-                  <SelectTrigger id="category" className="w-full">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIES.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="category">Category</Label>
+            <Select
+              value={form.category || null}
+              onValueChange={(value) =>
+                setForm({ ...form, category: value ?? "" })
+              }
+            >
+              <SelectTrigger id="category" className="w-full">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {CATEGORIES.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  rows={4}
-                  placeholder="Write a short description of the book"
-                  value={form.description}
-                  onChange={handleChange}
-                  maxLength={500}
-                  required
-                />
-              </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              name="description"
+              rows={4}
+              placeholder="Write a short description of the book"
+              value={form.description}
+              onChange={handleChange}
+              maxLength={500}
+              required
+            />
+          </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="imageUrl">Image URL</Label>
-                <Input
-                  id="imageUrl"
-                  name="imageUrl"
-                  type="url"
-                  placeholder="https://example.com/image.jpg"
-                  value={form.image}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="user-name">Your Name</Label>
-                <Input id="user-name" value={session.user.name} readOnly />
-              </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="image">Image URL</Label>
+            <Input
+              id="image"
+              name="image"
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              value={form.image}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="user-email">Your Email</Label>
-                <Input
-                  id="user-email"
-                  type="email"
-                  value={session.user.email}
-                  readOnly
-                />
-              </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="user-name">Your Name</Label>
+            <Input id="user-name" value={session.user.name} readOnly />
+          </div>
 
-              {message && (
-                <p
-                  role={messageType === "error" ? "alert" : "status"}
-                  className={`rounded-md p-3 text-sm ${
-                    messageType === "success"
-                      ? "bg-green-50 text-green-800"
-                      : "bg-red-50 text-red-700"
-                  }`}
-                >
-                  {message}
-                </p>
+          <div className="space-y-1.5">
+            <Label htmlFor="user-email">Your Email</Label>
+            <Input
+              id="user-email"
+              type="email"
+              value={session.user.email}
+              readOnly
+            />
+          </div>
+
+          {message && (
+            <p
+              role={messageType === "error" ? "alert" : "status"}
+              className={`rounded-md p-3 text-sm ${
+                messageType === "success"
+                  ? "bg-green-50 text-green-800"
+                  : "bg-red-50 text-red-700"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+
+          <div className="flex items-center justify-end gap-3 pt-1">
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              <Undo2 />
+              Cancel
+            </Button>
+
+            <Button type="submit" disabled={isSaving}>
+              {isSaving ? (
+                <Spinner data-icon="inline-start" />
+              ) : (
+                <BookPlus data-icon="inline-start" />
               )}
-
-              <div className="flex items-center justify-end gap-3 pt-1">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => router.back()}
-                >
-                  <Undo2 />
-                  Cancel
-                </Button>
-
-                <Button type="submit" disabled={isSaving}>
-                  {isSaving ? (
-                    <Spinner data-icon="inline-start" />
-                  ) : (
-                    <BookPlus data-icon="inline-start" />
-                  )}
-                  {isSaving ? "Editing book…" : "Edit Book"}
-                </Button>
-              </div>
-            </form>
+              {isSaving ? "Editing book…" : "Edit Book"}
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, BookPlus, Pencil, Trash2 } from "lucide-react";
+import { BookOpen, BookPlus } from "lucide-react";
 import { cn } from "cn";
 
 import type { Book } from "@/components/book-card";
