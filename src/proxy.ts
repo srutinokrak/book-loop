@@ -6,17 +6,24 @@ import { auth } from './lib/auth'
 // This function can be marked `async` if using `await` inside
 export async function proxy(request: NextRequest) {
    const session = await auth.api.getSession({
-    headers: await headers()
+     headers: request.headers,
    })
-   const user = session?.user
-   if(!user){
-      return NextResponse.redirect(new URL('/login',request.url))
-   }
+     if (!session?.user) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set(
+      "callbackUrl",
+      `${request.nextUrl.pathname}${request.nextUrl.search}`,
+    );
+
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
 }
 
 // Alternatively, you can use a default export:
 // export default function proxy(request: NextRequest) { ... }
 
 export const config = {
-  matcher: ['/add-books','/my-books','/books/:path'],
+  matcher: ['/books/add','/my-books','/books/:path','/my-borrows'],
 }

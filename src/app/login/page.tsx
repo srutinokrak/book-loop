@@ -33,10 +33,22 @@ export default function LoginPage() {
     try {
       const { data, error } = await authClient.signIn.email(credentials);
       if (error) {
-        setErrorMessage(error.message || "Login failed. Check your email and password.");
+        setErrorMessage(
+          error.message || "Login failed. Check your email and password.",
+        );
         return;
       }
-      if (data) router.push("/");
+      if (data) {
+        const callbackUrl = new URLSearchParams(window.location.search).get(
+          "callbackUrl",
+        );
+        const destination =
+          callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+            ? callbackUrl
+            : "/";
+
+          window.location.replace(destination)
+      }
     } catch {
       setErrorMessage("Could not connect to the server. Please try again.");
     } finally {
@@ -55,7 +67,14 @@ export default function LoginPage() {
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input id="email" name="email" type="email" placeholder="m@example.com" autoComplete="email" required />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  autoComplete="email"
+                  required
+                />
               </Field>
 
               <Field>
@@ -64,22 +83,43 @@ export default function LoginPage() {
                   <button
                     type="button"
                     className="text-sm underline-offset-4 hover:underline"
-                    onClick={() => setErrorMessage("Password reset is not set up yet. Please contact support.")}
+                    onClick={() =>
+                      setErrorMessage(
+                        "Password reset is not set up yet. Please contact support.",
+                      )
+                    }
                   >
                     Forgot password?
                   </button>
                 </div>
-                <Input id="password" name="password" type="password" autoComplete="current-password" required />
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                />
               </Field>
 
-              {errorMessage && <p role="alert" className="text-sm text-red-600">{errorMessage}</p>}
+              {errorMessage && (
+                <p role="alert" className="text-sm text-red-600">
+                  {errorMessage}
+                </p>
+              )}
 
-              <Button type="submit" disabled={isSubmitting} className="bg-[#2878a5]">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-[#2878a5]"
+              >
                 {isSubmitting ? "Logging in…" : "Login"}
               </Button>
 
               <FieldDescription className="text-center">
-                Don&apos;t have an account? <Link href="/register" className="underline">Register</Link>
+                Don&apos;t have an account?{" "}
+                <Link href="/register" className="underline">
+                  Register
+                </Link>
               </FieldDescription>
             </FieldGroup>
           </form>
