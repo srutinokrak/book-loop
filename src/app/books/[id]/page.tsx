@@ -36,6 +36,9 @@ const BOOKS_API_BASE = process.env.BOOKS_API_URL ?? "https://book-loop-backend.v
 
 const getBook = cache(async (id: string): Promise<Book | null> => {
   const response = await fetch(`${BOOKS_API_BASE}/book/${id}`, {
+    //   headers: {
+    //   authorization: `Bearer ${token}`
+    // },
     cache: "no-store",
   });
 
