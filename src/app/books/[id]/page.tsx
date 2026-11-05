@@ -289,4 +289,4 @@ const BooksDetailsPage = async ({
 };
 
 export default BooksDetailsPage;
-``
+
