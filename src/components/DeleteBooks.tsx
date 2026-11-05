@@ -18,6 +18,7 @@ import { Trash2 } from "lucide-react";
 import { cn } from "cn";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/toast";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const DeleteBooks = ({ id }: { id: string }) => {
   const router = useRouter();
@@ -26,9 +27,14 @@ const DeleteBooks = ({ id }: { id: string }) => {
   const handleDeletebooks = async () => {
     setOpen(false);
 
+    const token = await getTokenFromClient ();
     try {
       const res = await fetch(`https://book-loop-backend.vercel.app/book/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,  
+        },
       });
 
       if (!res.ok) {

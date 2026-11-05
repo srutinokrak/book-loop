@@ -10,6 +10,7 @@ import { MyBooksList } from "@/components/my-books-list";
 import type { Book } from "@/components/book-card";
 import { buttonVariants } from "@/components/ui/button";
 
+
 export const metadata: Metadata = {
   title: "My Books",
   description: "Manage the books you have added to BookNook.",
@@ -25,6 +26,7 @@ export default async function MyBooksPage() {
   if (!session) {
     redirect("/login");
   }
+
 
   const documents = await db
     .collection("books")

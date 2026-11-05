@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const CATEGORIES = ["Fiction", "Science", "History", "Kids", "Others"];
 
@@ -73,11 +74,14 @@ const EditBooksdialog = ({ book }: Props) => {
     const { title, author, category, description, image } = form;
     const updatedData = { title, author, category, description, image };
 
+   const token = await getTokenFromClient();
+
     try {
       const response = await fetch(`https://book-loop-backend.vercel.app/book/${book._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(updatedData),
       });

@@ -8,14 +8,17 @@ import { cn } from "cn";
 import { auth } from "@/lib/auth";
 import { BorrowsTable, type Borrow } from "@/components/borrows/BorrowsTable";
 import { buttonVariants } from "@/components/ui/button";
+import { getTokenServer } from "@/lib/getTokenserver";
 
 export const metadata: Metadata = {
   title: "My Borrows",
   description: "Track the books you have borrowed from BookNook.",
 };
 
-const BORROWS_API = process.env.BORROWS_API_URL ?? "https://book-loop-backend.vercel.app";
+const BOOKS_API_BASE = process.env.BOOK_API_URL ?? "https://book-loop-backend.vercel.app";
 
+
+const token = await getTokenServer();
 export default async function MyBorrowsPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -30,8 +33,13 @@ export default async function MyBorrowsPage() {
 
   try {
     const response = await fetch(
-      `${BORROWS_API}/borrows?email=${encodeURIComponent(session.user.email)}`,
-      { cache: "no-store" },
+      `${BOOKS_API_BASE}/borrows?email=${encodeURIComponent(session.user.email)}`,
+      {
+        cache: "no-store",
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      },
     );
 
     if (!response.ok) {

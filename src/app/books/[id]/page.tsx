@@ -17,8 +17,8 @@ import { getCategoryStyle } from "@/lib/category-styles";
 import EditBooksdialog from "@/components/EditBooksdialog";
 import DeleteBooks from "@/components/DeleteBooks";
 import BorrowBookDialog from "@/components/borrows/BorrowBookDialog";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+
+import { getTokenServer } from "@/lib/getTokenserver";
 
 type Book = {
   _id: string;
@@ -121,11 +121,7 @@ const BooksDetailsPage = async ({
 }) => {
   const { id } = await params;
 
-  const {token}  = await auth.api.getToken ({
-    headers: await headers()
-  });
-
-  console.log("Token:", token);
+const token = await getTokenServer()
 
     const res = await fetch(`${BOOKS_API_BASE}/book/${id}`, {
       headers: {

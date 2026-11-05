@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const CATEGORIES = ["Fiction", "Science", "History", "Kids", "Others"];
 
@@ -62,14 +63,13 @@ export default function AddBookPage() {
         throw new Error("Total copies must be a whole number of at least 1.");
       }
 
-    const {data, error} = await authClient.token()
-    console.log("Token data:", data);
+    const token = await getTokenFromClient();
 
       const response = await fetch("/api/books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${data?.token}`,
+          authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           title: form.title,

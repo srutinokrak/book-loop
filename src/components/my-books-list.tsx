@@ -48,7 +48,7 @@ export function MyBooksList({ initialBooks }: { initialBooks: Book[] }) {
           >
             <Link
               href={`/books/${book._id}`}
-              className="aspect-[2/3] w-24 shrink-0 overflow-hidden rounded-xl bg-slate-100"
+              className="aspect-2/3 w-24 shrink-0 overflow-hidden rounded-xl bg-slate-100"
             >
               {book.image ? (
                 // eslint-disable-next-line @next/next/no-img-element -- covers are user-supplied URLs from any host
@@ -68,7 +68,7 @@ export function MyBooksList({ initialBooks }: { initialBooks: Book[] }) {
             <div className="flex min-w-0 flex-1 flex-col">
               <span
                 className={cn(
-                  "w-fit rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em]",
+                  "w-fit rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest",
                   categoryStyle.badge,
                 )}
               >
