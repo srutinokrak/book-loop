@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { BookPlus, Undo2 } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -62,10 +62,14 @@ export default function AddBookPage() {
         throw new Error("Total copies must be a whole number of at least 1.");
       }
 
+    const {data, error} = await authClient.token()
+    console.log("Token data:", data);
+
       const response = await fetch("/api/books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${data?.token}`,
         },
         body: JSON.stringify({
           title: form.title,
@@ -78,7 +82,7 @@ export default function AddBookPage() {
       });
 
       const result = await response.json();
-
+      console.log("API Response:", result);
       if (!response.ok) {
         throw new Error(result.message || "Could not add the book.");
       }

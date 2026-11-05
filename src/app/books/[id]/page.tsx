@@ -17,6 +17,8 @@ import { getCategoryStyle } from "@/lib/category-styles";
 import EditBooksdialog from "@/components/EditBooksdialog";
 import DeleteBooks from "@/components/DeleteBooks";
 import BorrowBookDialog from "@/components/borrows/BorrowBookDialog";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 type Book = {
   _id: string;
@@ -119,25 +121,21 @@ const BooksDetailsPage = async ({
 }) => {
   const { id } = await params;
 
-  let book: Book | null = null;
-  let loadFailed = false;
+  const {token}  = await auth.api.getToken ({
+    headers: await headers()
+  });
 
-  try {
-    book = await getBook(id);
-    console.log(book);
-  } catch (error) {
-    console.error("Could not load book:", error);
-    loadFailed = true;
-  }
+  console.log("Token:", token);
 
-  if (loadFailed) {
-    return (
-      <BookMessage
-        title="We couldn't load this book"
-        description="Something went wrong while reaching the books service. Please refresh the page and try again."
-      />
-    );
-  }
+    const res = await fetch(`${BOOKS_API_BASE}/book/${id}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
+const book: Book | null = await res.json();
+
+
 
   if (!book) {
     return (
