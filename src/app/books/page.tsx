@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const BOOKS_API_URL =
-  process.env.BOOKS_API_URL ?? "https://book-loop-backend.vercel.app/books";
+const BOOKS_API_BASE = `${process.env.BOOKS_API_BASE}` ;
+console.log(BOOKS_API_BASE);
 
 const primaryButton = cn(
   buttonVariants({ size: "lg" }),
@@ -22,11 +22,12 @@ const primaryButton = cn(
 );
 
 async function getBooks(): Promise<Book[]> {
-  const response = await fetch(BOOKS_API_URL, { cache: "no-store" });
+  const response = await fetch(`${BOOKS_API_BASE}/books`, { cache: "no-store" });
 
-  if (!response.ok) {
-    throw new Error(`The books service responded with ${response.status}.`);
-  }
+  console.log(response  );
+  // if (!response.ok) {
+  //   throw new Error(`The books service responded with ${response.status}.`);
+  // }
 
   const data: unknown = await response.json();
   if (!Array.isArray(data)) {

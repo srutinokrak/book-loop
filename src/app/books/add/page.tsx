@@ -2,7 +2,6 @@
 
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { BookPlus, Undo2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,6 +18,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+import { useRouter } from "next/navigation";
 
 const CATEGORIES = ["Fiction", "Science", "History", "Kids", "Others"];
 
@@ -87,14 +87,18 @@ export default function AddBookPage() {
         throw new Error(result.message || "Could not add the book.");
       }
 
-      toast.add({
+      if(response.ok){
+       router.replace("/books");
+       toast.add({
         type: "success",
         title: "Book added successfully!",
         description: "Your book has been added to the library.",
         
       });
+      
       setMessageType("success");
       setForm(initialForm);
+     }
     } catch (error) {
       setMessage(
         error instanceof Error ? error.message : "Could not add the book.",

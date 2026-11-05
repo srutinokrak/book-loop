@@ -15,11 +15,11 @@ export const metadata: Metadata = {
   description: "Track the books you have borrowed from BookNook.",
 };
 
-const BOOKS_API_BASE = process.env.BOOK_API_URL ?? "https://book-loop-backend.vercel.app";
+const BOOKS_API_BASE = `${process.env.BOOKS_API_BASE}` ;
 
 
-const token = await getTokenServer();
 export default async function MyBorrowsPage() {
+  const token = await getTokenServer();
   const session = await auth.api.getSession({
     headers: await headers(),
   });

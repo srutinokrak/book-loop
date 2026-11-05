@@ -19,6 +19,38 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  async function handleGoogleSignIn() {
+    setErrorMessage("");
+    setIsSubmitting(true);
+
+    
+    try {
+      const callbackUrl = new URLSearchParams(window.location.search).get(
+  "callbackUrl",
+);
+
+const destination =
+  callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+    ? callbackUrl
+    : "/";
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL:destination
+      });
+
+      if (error) {
+        setErrorMessage(
+          error.message || "Google sign-in failed. Please try again.",
+        );
+        setIsSubmitting(false);
+      }
+      
+    } catch {
+      setErrorMessage("Could not connect to Google. Please try again.");
+      setIsSubmitting(false);
+    }
+  }
+
   async function handleEmailLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
@@ -47,7 +79,7 @@ export default function LoginPage() {
             ? callbackUrl
             : "/";
 
-          window.location.replace(destination)
+        window.location.replace(destination);
       }
     } catch {
       setErrorMessage("Could not connect to the server. Please try again.");
@@ -113,6 +145,29 @@ export default function LoginPage() {
                 className="bg-[#2878a5]"
               >
                 {isSubmitting ? "Logging in…" : "Login"}
+              </Button>
+
+              <div className="flex items-center gap-3 text-xs text-slate-400">
+                <span className="h-px flex-1 bg-slate-200" />
+                OR
+                <span className="h-px flex-1 bg-slate-200" />
+              </div>
+
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isSubmitting}
+                onClick={handleGoogleSignIn}
+                className="w-full"
+              >
+                <img
+                  src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                  alt=""
+                  aria-hidden="true"
+                  width={15}
+                  height={15}
+                />
+                Continue with Google
               </Button>
 
               <FieldDescription className="text-center">

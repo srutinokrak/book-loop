@@ -77,7 +77,7 @@ const EditBooksdialog = ({ book }: Props) => {
    const token = await getTokenFromClient();
 
     try {
-      const response = await fetch(`https://book-loop-backend.vercel.app/book/${book._id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BOOKS_API_BASE}/books/${book._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

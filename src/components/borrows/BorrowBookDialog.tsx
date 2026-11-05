@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,8 @@ import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/components/ui/toast";
 
+import { makeBorrowBook } from "@/lib/borrow-books";
+
 type Props = {
   book: {
     _id: string;
@@ -29,49 +31,35 @@ type Props = {
   };
 };
 
-const BORROWS_API = "https://book-loop-backend.vercel.app";
 
 const BorrowBookDialog = ({ book }: Props) => {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [open, setOpen] = useState(false);
   const [isBorrowing, setIsBorrowing] = useState(false);
-
+  
+  
   const handleBorrow = async () => {
     if (!session) {
-      router.replace("/login");
+      router.replace(
+  `/login?callbackUrl=${encodeURIComponent(
+    window.location.pathname + window.location.search,
+  )}`,
+);
       return;
     }
-
+    
     setIsBorrowing(true);
     try {
       const borrowedOn = new Date();
       const dueOn = addDays(borrowedOn, 14);
+      
+      const result = await makeBorrowBook(book, session.user.email);
+console.log(result);
 
-      const response = await fetch(`${BORROWS_API}/borrows`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          bookId: book._id,
-          bookTitle: book.title,
-          bookImage: book.image,
-          userEmail: session.user.email,
-          borrowDate: borrowedOn.toISOString(),
-          returnDate: dueOn.toISOString(),
-        }),
-      });
 
-      const result: { message?: string } | null = await response
-        .json()
-        .catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(result?.message || "Could not borrow this book.");
-      }
-
-      toast.add({
+     
+        toast.add({
         type: "success",
         title: "Book borrowed!",
         description: `Please return it by ${format(dueOn, "MMM d, yyyy")}.`,
@@ -79,6 +67,7 @@ const BorrowBookDialog = ({ book }: Props) => {
 
       setOpen(false);
       router.refresh();
+      
     } catch (error) {
       toast.add({
         type: "error",

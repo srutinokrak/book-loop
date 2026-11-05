@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "@/components/ui/toast";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 export type Borrow = {
   _id: string;
@@ -29,7 +30,7 @@ export type Borrow = {
   returnDate: string;
 };
 
-const BORROWS_API = "https://book-loop-backend.vercel.app";
+const BORROWS_API = `${process.env.NEXT_PUBLIC_BOOKS_API_BASE}` ;
 
 function formatDate(value: string) {
   const date = new Date(value);
@@ -67,15 +68,21 @@ export function BorrowsTable({ borrows }: { borrows: Borrow[] }) {
   }
 
   const handleReturn = async (id: string) => {
+    const token = await getTokenFromClient();
+    console.log(`${BORROWS_API}/borrows/${id}`);
     setReturningId(id);
     try {
       const response = await fetch(`${BORROWS_API}/borrows/${id}`, {
         method: "DELETE",
+         headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,  
+        },
       });
-
       const data: { message?: string } | null = await response
-        .json()
-        .catch(() => null);
+      .json()
+      .catch(() => null);
+      console.log(data);
 
       if (!response.ok) {
         throw new Error(data?.message || "Could not return the book.");
