@@ -276,8 +276,8 @@ const BooksDetailsPage = async ({
                     </button>
                   )}
 
-                  <EditBooksdialog book={book} />
-                  <DeleteBooks id={id} />
+               
+                 
                 </div>
               </div>
             </div>
