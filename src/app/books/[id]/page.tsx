@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cache } from "react";
@@ -34,7 +35,7 @@ type Book = {
   availableCopies?: number;
 };
 
-const BOOKS_API_BASE = `${process.env.BOOKS_API_BASE}` ;
+const BOOKS_API_BASE = `${process.env.BOOKS_API_BASE}`;
 
 const getBook = cache(async (id: string): Promise<Book | null> => {
   const response = await fetch(`${BOOKS_API_BASE}/book/${id}`, {
@@ -92,8 +93,8 @@ function BookMessage({
   description: string;
 }) {
   return (
-    <section className="flex min-h-[calc(100vh-76px)] items-center bg-[#f8fafc] px-5 py-16 sm:px-8">
-      <div className="mx-auto flex w-full max-w-xl flex-col items-center rounded-3xl border border-dashed border-slate-300 bg-white/70 px-6 py-16 text-center">
+    <section className="flex min-h-[calc(100vh-76px)] items-center bg-[#f8fafc] px-4 py-10 sm:px-8 sm:py-16">
+      <div className="mx-auto flex w-full max-w-xl flex-col items-center rounded-3xl border border-dashed border-slate-300 bg-white/70 px-5 py-10 text-center sm:px-6 sm:py-16">
         <span className="flex size-14 items-center justify-center rounded-2xl bg-sky-100 text-sky-700">
           <BookOpen size={26} strokeWidth={1.8} />
         </span>
@@ -121,17 +122,16 @@ const BooksDetailsPage = async ({
 }) => {
   const { id } = await params;
 
-const token = await getTokenServer()
+  const token = await getTokenServer();
 
-    const res = await fetch(`${BOOKS_API_BASE}/book/${id}`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-      cache: "no-store",
-    });
-const book: Book | null = await res.json();
+  const res = await fetch(`${BOOKS_API_BASE}/book/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+    cache: "no-store",
+  });
 
-
+  const book: Book | null = await res.json();
 
   if (!book) {
     return (
@@ -153,8 +153,8 @@ const book: Book | null = await res.json();
   const isAvailable = availableCopies > 0;
 
   return (
-    <section className="min-h-[calc(100vh-76px)]  bg-[#f8fafc] px-5 py-10 sm:px-8 sm:py-14">
-      <div className="mx-auto max-w-6xl">
+    <section className="min-h-[calc(100vh-76px)] bg-[#f8fafc] px-4 py-6 sm:px-8 sm:py-14">
+      <div className="mx-auto w-full max-w-6xl">
         <Link
           href="/books"
           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:gap-3 hover:text-sky-800"
@@ -163,15 +163,15 @@ const book: Book | null = await res.json();
           Back to all books
         </Link>
 
-        <article className="mt-6 overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200">
-          <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
+        <article className="mt-6 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 sm:rounded-3xl">
+          <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr]">
             <div
               className={cn(
-                "flex items-center justify-center p-6 sm:p-10 lg:p-12",
+                "flex items-center justify-center p-5 sm:p-10 lg:p-12",
                 categoryStyle.soft,
               )}
             >
-              <div className="aspect-2/3 w-full max-w-sm overflow-hidden rounded-2xl bg-slate-200 shadow-lg ring-1 ring-black/5">
+              <div className="aspect-2/3 w-full max-w-[280px] overflow-hidden rounded-2xl bg-slate-200 shadow-lg ring-1 ring-black/5 sm:max-w-sm">
                 {book.image ? (
                   // eslint-disable-next-line @next/next/no-img-element -- covers are user-supplied URLs from any host
                   <img
@@ -187,37 +187,37 @@ const book: Book | null = await res.json();
               </div>
             </div>
 
-            <div className="flex flex-col p-6 sm:p-8 lg:p-10">
+            <div className="flex min-w-0 flex-col p-5 sm:p-8 lg:p-10">
               <span
                 className={cn(
-                  "w-fit rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em]",
+                  "w-fit max-w-full rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em]",
                   categoryStyle.badge,
                 )}
               >
                 {book.category}
               </span>
 
-              <h1 className="mt-4 text-3xl font-semibold tracking-tight text-[#243b53] sm:text-4xl">
+              <h1 className="mt-4 break-words text-2xl font-semibold tracking-tight text-[#243b53] sm:text-4xl">
                 {book.title}
               </h1>
-              <p className="mt-2 text-base text-slate-500">
+              <p className="mt-2 break-words text-base text-slate-500">
                 by{" "}
                 <span className="font-semibold text-slate-700">
                   {book.author}
                 </span>
               </p>
 
-              <div className="mt-7 border-t border-slate-100 pt-6">
+              <div className="mt-6 border-t border-slate-100 pt-5 sm:mt-7 sm:pt-6">
                 <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
                   About this book
                 </h2>
-                <p className="mt-3 whitespace-pre-line leading-8 text-slate-600">
+                <p className="mt-3 whitespace-pre-line break-words leading-7 text-slate-600 sm:leading-8">
                   {book.description?.trim() || "No description provided yet."}
                 </p>
               </div>
 
-              <div className="mt-8 flex items-center gap-3 rounded-2xl border border-slate-100 bg-[#f8fafc] p-4">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sky-800">
+              <div className="mt-6 flex min-w-0 flex-col gap-3 rounded-2xl border border-slate-100 bg-[#f8fafc] p-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-3 sm:p-4">
+                <span className="flex size-11 shrink-0 items-center justify-center self-start rounded-full bg-sky-100 text-sky-800">
                   {book.userName?.trim() ? (
                     <span className="text-sm font-bold uppercase">
                       {book.userName.trim().charAt(0)}
@@ -226,7 +226,8 @@ const book: Book | null = await res.json();
                     <UserRound size={20} strokeWidth={1.8} />
                   )}
                 </span>
-                <div className="min-w-0">
+
+                <div className="min-w-0 flex-1">
                   <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
                     Added by
                   </p>
@@ -240,16 +241,19 @@ const book: Book | null = await res.json();
                   )}
                   {addedOnLabel && (
                     <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-400">
-                      <CalendarDays size={13} />
+                      <CalendarDays size={13} className="shrink-0" />
                       {addedOnLabel}
                     </p>
                   )}
                 </div>
-                <p>{book.availableCopies ?? 0} copies left</p>
+
+                <p className="shrink-0 text-sm font-medium text-slate-600 sm:ml-auto">
+                  {book.availableCopies ?? 0} copies left
+                </p>
               </div>
 
-              <div className="mt-8">
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="mt-6 sm:mt-8">
+                <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center">
                   {isAvailable ? (
                     <BorrowBookDialog
                       book={{
@@ -285,3 +289,4 @@ const book: Book | null = await res.json();
 };
 
 export default BooksDetailsPage;
+``
